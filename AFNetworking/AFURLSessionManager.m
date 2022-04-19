@@ -990,7 +990,14 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
     }
 
     if (evaluateServerTrust) {
-        if ([self.securityPolicy evaluateServerTrust:challenge.protectionSpace.serverTrust forDomain:challenge.protectionSpace.host]) {
+        #pragma mark ----------DNS change----------
+        NSString *host = [task.currentRequest.allHTTPHeaderFields objectForKey:@"host"];
+        if (!host) {
+            host = task.currentRequest.URL.host;
+        }
+        if ([self.securityPolicy evaluateServerTrust:challenge.protectionSpace.serverTrust forDomain:host]) {
+#pragma mark ----------DNS change----------
+//         if ([self.securityPolicy evaluateServerTrust:challenge.protectionSpace.serverTrust forDomain:challenge.protectionSpace.host]) {
             disposition = NSURLSessionAuthChallengeUseCredential;
             credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
         } else {

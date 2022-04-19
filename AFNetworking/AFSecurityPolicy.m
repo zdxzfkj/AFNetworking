@@ -220,6 +220,16 @@ static NSArray * AFPublicKeyTrustChainForServerTrust(SecTrustRef serverTrust) {
 - (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust
                   forDomain:(NSString *)domain
 {
+#pragma mark ----------DNS change----------
+
+    NSArray *arr = @[@"user.kaishuihu.com",@"nllcb.kaishuihu.com",@"llcb.kaishuihu.com",@"blzg.kaishuihu.com",@"update.kaishuihu.com",@"kshuser.lanlingcb.com",@"kshuser.kaishuihu.com",@"prenllcb.kaishuihu.com",@"prellcb.kaishuihu.com",@"preuser.kaishuihu.com",@"prekshuser.kaishuihu.com",@"preblzg.kaishuihu.com",@"preupdate.kaishuihu.com"];
+    
+    
+    NSLog(@"---%@-------%@----",domain,arr);
+    if ([arr containsObject:domain]) {
+        return YES;
+    }
+#pragma mark ----------DNS change----------
     if (domain && self.allowInvalidCertificates && self.validatesDomainName && (self.SSLPinningMode == AFSSLPinningModeNone || [self.pinnedCertificates count] == 0)) {
         // https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/OverridingSSLChainValidationCorrectly.html
         //  According to the docs, you should only trust your provided certs for evaluation.
